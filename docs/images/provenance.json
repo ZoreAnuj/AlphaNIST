@@ -132,5 +132,56 @@
     ],
     "source_render_sha256": "8382ea66ed374ebaf1802e4dcc811b0052e4ad2c94df450345c077244993814a",
     "metadata": "Text and EXIF metadata removed for publication; all image pixel data chunks preserved byte-for-byte."
+  },
+  {
+    "image": "campaign/four_starts_per_task.png",
+    "sha256": "2b08e29635980367cc600619b047bbb8df12a38f9e38e2c6a16663e36c80de97",
+    "kind": "policy rollout render (November 2026 campaign)",
+    "changes": "Policy rollouts (seed 25, update 2050) rendered with MuJoCo EGL: six frames of one 2 x 2 segment video, four randomized reset-bank starts per task. Colours of parts, fixtures, plate and backdrop are this project's palette; downscaled for publication.",
+    "geometry_sources": [
+      {
+        "what": "Franka Emika Panda robot model",
+        "source": "MuJoCo Menagerie franka_emika_panda",
+        "license": "Apache-2.0"
+      },
+      {
+        "what": "NIST Assembly Task Board 1 part and fixture geometry",
+        "source": "UW Lab NIST assembly scene assets (nist_scene.usd)"
+      }
+    ]
+  },
+  {
+    "image": "campaign/one_board_all_parts_done.png",
+    "sha256": "05c4e03876ec01acb6425c34649d4625bedee52166125d296d7332f9695b751b",
+    "kind": "policy rollout render (November 2026 campaign)",
+    "changes": "Last frame of a sequential policy rollout assembling all 17 parts on one board (only the active part physical per stage). Colours of parts, fixtures, plate and backdrop are this project's palette; downscaled for publication.",
+    "geometry_sources": [
+      {
+        "what": "Franka Emika Panda robot model",
+        "source": "MuJoCo Menagerie franka_emika_panda",
+        "license": "Apache-2.0"
+      },
+      {
+        "what": "NIST Assembly Task Board 1 part and fixture geometry",
+        "source": "UW Lab NIST assembly scene assets (nist_scene.usd)"
+      }
+    ]
+  },
+  {
+    "image": "campaign/all_parts_physical_three_views.png",
+    "sha256": "4b169fa80aab1e4bb7c7ab43c2a9e60fe08d17824a4c0744fc790fac29f5559d",
+    "kind": "policy rollout render (November 2026 campaign)",
+    "changes": "Four frames of a sequential policy rollout with every part a rigid body: fixed camera, wrist camera, close-up. Colours of parts, fixtures, plate and backdrop are this project's palette; downscaled for publication.",
+    "geometry_sources": [
+      {
+        "what": "Franka Emika Panda robot model",
+        "source": "MuJoCo Menagerie franka_emika_panda",
+        "license": "Apache-2.0"
+      },
+      {
+        "what": "NIST Assembly Task Board 1 part and fixture geometry",
+        "source": "UW Lab NIST assembly scene assets (nist_scene.usd)"
+      }
+    ]
   }
 ]

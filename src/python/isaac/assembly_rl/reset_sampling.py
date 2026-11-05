@@ -203,6 +203,15 @@ class SuccessGuidedSampler:
     AlphaNIST Algorithm 1 averages observed outcomes, as does the cited OmniReset
     success monitor. Unseen entries have rate zero, without fictitious failures.
     Save sampler state together with the ordered bank identity.
+
+    Starvation (November 2026 campaign, docs/campaign_2026-11.md): the weight
+    epsilon + sqrt(p (1 - p)) is epsilon for every row with p == 0 or p == 1, so
+    with epsilon 1e-4 a never-solved row gets about 3,000x fewer draws than a
+    frontier row. Starts the policy has never solved stay unvisited (one task's
+    unthreaded starts were drawn in 0.1 % of samples after 1,900 updates and
+    scored 0 % in evaluation) and mastered rows are never re-measured. The
+    trainer default is therefore 1e-2 (12 % of draws reach p == 0 rows from a
+    late-stage state), and `coverage()` reports where the draws go.
     """
 
     def __init__(
@@ -250,6 +259,34 @@ class SuccessGuidedSampler:
             self._history[index, cursor] = success
             self._cursor[index] = (cursor + 1) % self._history.shape[1]
             self._counts[index] = min(self._counts[index] + 1, self._history.shape[1])
+
+    def coverage(self, groups: np.ndarray | None = None) -> dict[str, Any]:
+        """Where the draws go: row and draw shares of unseen, never-solved,
+        always-solved and frontier rows, the effective number of rows
+        (1 / sum q^2) and, with `groups` (one label per row, e.g. task or
+        reset family), the draw share per group."""
+        q = self.probabilities()
+        rates = self._history.sum(axis=1) / self._counts.clip(min=1)
+        seen = self._counts > 0
+        classes = {
+            "unseen": ~seen,
+            "never_solved": seen & (rates <= 0),
+            "always_solved": seen & (rates >= 1),
+        }
+        classes["frontier"] = seen & ~classes["never_solved"] & ~classes["always_solved"]
+        report = {
+            "rows": {k: float(v.mean()) for k, v in classes.items()},
+            "draws": {k: float(q[v].sum()) for k, v in classes.items()},
+            "effective_rows": float(1.0 / np.square(q).sum()),
+        }
+        if groups is not None:
+            groups = np.asarray(groups)
+            if groups.shape != (len(q),):
+                raise ValueError("groups must have one label per bank row")
+            report["draws_by_group"] = {
+                str(g): float(q[groups == g].sum()) for g in np.unique(groups)
+            }
+        return report
 
     def state_dict(self) -> dict[str, Any]:
         return {

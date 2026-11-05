@@ -135,7 +135,7 @@ class Trainer:
         bank_identity: str,
         asset_identity: str,
         sgs_window: int = 100,
-        sgs_epsilon: float = 1e-4,
+        sgs_epsilon: float = 1e-2,  # paper: 1e-4; see reset_sampling.SuccessGuidedSampler (starvation)
         provenance: dict | None = None,
     ):
         self.env, self.config = env, config or policy.PPOConfig()

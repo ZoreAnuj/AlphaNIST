@@ -12,7 +12,7 @@ The learning core runs independently of the simulator. Full simulation uses the 
 
 ## Research scope
 
-The implementation combines point-cloud observations, separate actor and critic networks, PPO, success-guided reset sampling, and physics-validated reset banks. The current experimental setting uses a six-axis UR7e with a parallel-jaw gripper and ten industrial assembly tasks. Newton/MuJoCo-Warp advances physics; Isaac Sim renders scene and recorded-state previews.
+The implementation combines point-cloud observations, separate actor and critic networks, PPO, success-guided reset sampling, and physics-validated reset banks. The current experimental setting uses a six-axis UR7e with a parallel-jaw gripper and ten industrial assembly tasks. Newton/MuJoCo-Warp advances physics; Isaac Sim renders scene and recorded-state previews. A second campaign on the NIST Assembly Task Board 1 with a Franka Panda in CPU MuJoCo is reported [below](#results-nist-task-board-1-campaign-november-2026).
 
 This is an adaptation, not an exact reproduction of the paper's Franka/NIST benchmark. Point aggregation, robot dimensions, collision geometry, reset validation, and several unspecified optimizer defaults are explicit implementation choices. Their sources and differences are recorded in [provenance](docs/provenance.md) and `policy.CONFIG_PROVENANCE`.
 
@@ -30,6 +30,36 @@ These are existing **assembled-target renders** from the experimental scenes, no
 
 *Gear assembly: NVIDIA IndustRealKit source geometry; this image is subject to the included [NVIDIA research/evaluation license](third_party/IndustReal-NVIDIA.txt).*
 
+## Results: NIST Task Board 1 campaign (November 2026)
+
+A 16-seed campaign of the method on the NIST Assembly Task Board 1 with a Franka Panda in CPU MuJoCo (17 of the 20
+board tasks, 32,768 environments per seed, held-out evaluation of 3,200 trials per checkpoint). Full tables, the
+reset-sampler finding and the halving rule are in [the campaign report](docs/campaign_2026-11.md).
+
+| held-out success at update 2000 (2.1 B transitions per seed) | value |
+| --- | --- |
+| 17 trained tasks, best seed | 94.3 % |
+| 16 tasks without the M8 nut, best seed | 98.5 % (three seeds at or above the paper's 98.4 %) |
+| per reset family over 17 tasks | loose 92.9, pick-up 94.0, in-hand 92.7, near target 93.2, partially inserted 98.9 |
+| M8 nut | 26.9 %: 89 % from partially inserted starts, 19 % from loose starts after the sampler-floor fix, 0 % before |
+| progression of the hard families (seed 14, loose / pick-up / in-hand) | update 100: 0 / 0 / 1, 500: 16 / 18 / 40, 1000: 33 / 32 / 60, 1500: 79 / 87 / 87, 2000: 91 / 92 / 92 |
+
+What changed in this repository because of it: the success-guided sampler's floor (`sgs_epsilon`) defaults to 1e-2
+instead of the paper's 1e-4 because 1e-4 starves never-solved starts (0.3 % of draws reached them after 1,900 updates),
+`SuccessGuidedSampler.coverage()` reports where the draws go, and `halving.py` holds the seed-halving decision rule with
+its straggler handling. Training-log success is not a measure of the policy: it tracks the sampler's current draw.
+
+![Four randomized starts per task](docs/images/campaign/four_starts_per_task.png)
+
+*Seed 25 at update 2050: four randomized successful starts per task, one per reset family where available; the two
+rows shown are the 4 mm round peg and the M8 nut. All 17 segments: 68 starts, 68 seated.*
+
+![All parts physical, three views](docs/images/campaign/all_parts_physical_three_views.png)
+
+*The same policy assembling all 17 parts on one board in one run with every part a rigid body: 15 of 17 seated. The
+policy perceives only its own part, so it sweeps loose parts and knocks seated neighbours; the wrist camera (bottom
+left) shows it happen.*
+
 ## Quick start: learning core
 
 ```bash
@@ -42,6 +72,7 @@ OMP_NUM_THREADS=1 python -m pytest -q \
   src/python/isaac/assembly_rl/policy_unit_test.py \
   src/python/isaac/assembly_rl/trainer_unit_test.py \
   src/python/isaac/assembly_rl/reset_sampling_unit_test.py \
+  src/python/isaac/assembly_rl/halving_unit_test.py \
   src/python/isaac/assembly_rl/geometry_unit_test.py
 ```
 
@@ -53,7 +84,8 @@ These checks cover policy/PPO behavior, reset sampling, geometry, checkpoint/res
 | --- | --- |
 | `policy.py` | Point encoder, residual actor/critic, normalization, PPO/GAE |
 | `train.py` | Rollouts, distributed updates, checkpoints, held-out evaluation |
-| `reset_sampling.py` | Reset representation and success-guided sampling |
+| `reset_sampling.py` | Reset representation and success-guided sampling, `coverage()` starvation diagnostic |
+| `halving.py` | Successive halving over seeds from held-out evaluations, with the straggler rule |
 | `reset_bank_builder.py`, `merge_reset_banks.py` | Physics validation and balanced bank assembly |
 | `environment.py`, `model.py`, `physics_step.py` | UR7e task physics and control |
 | `prepare_*`, `collision_*` | Source geometry and collision preparation |

@@ -60,6 +60,13 @@ FreeCAD geometry comes from [FreeCAD-library `f5ca01c`](https://github.com/FreeC
 
 Gear geometry comes from [IndustRealKit `0c91cb5`](https://github.com/NVlabs/industrealkit/tree/0c91cb5f7fb391e0cc8515fcdf669aab7e9ffe4b). The gear render is distributed under the included [NVIDIA license](../third_party/IndustReal-NVIDIA.txt), with its research/evaluation-only restriction. It is not covered by a permissive project-wide license.
 
+### Campaign rollout renders
+
+`docs/images/campaign/*.png` are frames of policy rollouts from the November 2026 NIST Task Board 1 campaign
+([report](campaign_2026-11.md)), rendered with MuJoCo's EGL renderer. The robot is the MuJoCo Menagerie Franka Emika
+Panda model (Apache-2.0); the board, fixtures and parts are the NIST Assembly Task Board 1 geometry from the UW Lab NIST
+assembly scene assets. Colours are this project's palette. Entries with hashes are in `docs/images/provenance.json`.
+
 ## Excluded assets and licensing boundary
 
 Raw CAD, workshop assets, bank archives, checkpoints, and infrastructure data are excluded. In particular, the inspected [UW-Lab asset dataset](https://huggingface.co/datasets/UW-Lab/uwlab-assets/tree/f9486a69b30a38355c1c2415fc15f6d6be8cb5b3) does not establish asset-specific redistribution rights for the NIST USD conversions used experimentally. A software repository's BSD license must not be assumed to cover third-party meshes. Those meshes and their renders are not published here.

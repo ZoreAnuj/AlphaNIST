@@ -431,7 +431,7 @@ CONFIG_PROVENANCE = {
     },
     "omnireset_legacy": {
         "url": "https://github.com/uw-lab/uwlab/tree/825cfce364f7e34b4b29aab73d37c5a1464f4375",
-        "settings": "Adam 1e-4, gamma .99, lambda .95, clip .2, entropy .006, value coefficient 1, grad norm 1, adaptive KL .01, clipped values; SGS history 100 and epsilon 1e-4; five observation frames",
+        "settings": "Adam 1e-4, gamma .99, lambda .95, clip .2, entropy .006, value coefficient 1, grad norm 1, adaptive KL .01, clipped values; SGS history 100 and epsilon 1e-2 (paper 1e-4; raised after the November 2026 campaign, docs/campaign_2026-11.md); five observation frames",
     },
     "rsl_ppo": {
         "url": "https://github.com/uw-lab/rsl_rl/tree/e7cd3c77bdb3c94753612f208c725e1add38a655",
