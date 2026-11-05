@@ -19,7 +19,16 @@ are from the campaign's held-out evaluations unless marked as training logs.
 
 Update 2000 corresponds to 2.1 billion transitions per seed, about 61 hours of wall clock for the original seeds.
 
-## Progression of the held-out success by reset family
+## Progression of the held-out success
+
+![Held-out success of each task along training](images/campaign/per_task_progression.png)
+
+![Held-out success by reset family along training](images/campaign/family_progression.png)
+
+Every evaluated checkpoint of every seed, with per-task and per-family numbers: [`campaign_evals.csv`](campaign_evals.csv)
+(71 evaluations, 29 seeds). The tables below are the seed 14 lineage rows of that file.
+
+### By reset family
 
 Seed 14, the original seed whose lineage won the halving, and the best seed at each milestone. All numbers are over the
 17 trained tasks.

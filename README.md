@@ -30,6 +30,23 @@ reset-sampler finding and the halving rule are in [the campaign report](docs/cam
 | M8 nut | 26.9 %: 89 % from partially inserted starts, 19 % from loose starts after the sampler-floor fix, 0 % before |
 | progression of the hard families (seed 14, loose / pick-up / in-hand) | update 100: 0 / 0 / 1, 500: 16 / 18 / 40, 1000: 33 / 32 / 60, 1500: 79 / 87 / 87, 2000: 91 / 92 / 92 |
 
+### Evaluation along training
+
+Every checkpoint on the milestone list was scored on the same held-out panel, 3,200 trials each, the same 160 starts
+per task every time. The plot follows each of the 17 tasks through the winning lineage (seed 14, continued by its
+forks), from the first checkpoint to update 2000. Numbers for every evaluated checkpoint of every seed, including the
+per-family split, are in [`docs/campaign_evals.csv`](docs/campaign_evals.csv).
+
+![Held-out success of each task along training](docs/images/campaign/per_task_progression.png)
+
+Reading it: the gears are the first to be solved (above 90 % at update 500), the connectors and round pegs follow by
+1500, the square pegs are the slowest of the insertion tasks, with the 4 mm square peg last, and the M8 nut stays at
+zero until the reset-sampler floor was raised at update 1900, after which it starts to move. The same evaluations split
+by reset family show the three hard families, loose on the plate, pick-up and in hand, going from 0 to 90 % while the
+partially inserted starts were never below 84 %:
+
+![Held-out success by reset family along training](docs/images/campaign/family_progression.png)
+
 What changed in this repository because of it: the success-guided sampler's floor (`sgs_epsilon`) defaults to 1e-2
 instead of the paper's 1e-4 because 1e-4 starves never-solved starts (0.3 % of draws reached them after 1,900 updates),
 `SuccessGuidedSampler.coverage()` reports where the draws go, and `halving.py` holds the seed-halving decision rule with
