@@ -123,6 +123,9 @@ for, and are protected when they are the only seed of their lineage (`halving_un
 
 ## Demonstrations
 
+Videos: `../docs/videos/` holds the three full runs (four starts per task, one board sequential, all parts physical) and
+`../docs/gifs/` one clip per task; they are embedded in the [README](../README.md#videos-combined-runs).
+
 ![Four randomized starts per task](images/campaign/four_starts_per_task.png)
 
 Seed 25 at update 2050 on four randomized successful starts per task, one from each reset family where available (15

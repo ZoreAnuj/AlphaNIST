@@ -183,5 +183,46 @@
         "source": "UW Lab NIST assembly scene assets (nist_scene.usd)"
       }
     ]
+  },
+  {
+    "image": "docs/videos/*.mp4 and docs/gifs/*.gif",
+    "kind": "policy rollout videos (November 2026 campaign)",
+    "changes": "Rendered with MuJoCo EGL from recorded rollout states; H.264 at 960 px wide and GIF previews at 480 px, 8 to 10 fps, 128 colours. Colours are this project's palette.",
+    "geometry_sources": [
+      {
+        "what": "Franka Emika Panda robot model",
+        "source": "MuJoCo Menagerie franka_emika_panda",
+        "license": "Apache-2.0"
+      },
+      {
+        "what": "NIST Assembly Task Board 1 part and fixture geometry",
+        "source": "UW Lab NIST assembly scene assets (nist_scene.usd)"
+      }
+    ],
+    "files": {
+      "docs/gifs/BNC.gif": "9a701636e6d24763164e17b1139f62a4e72f827f203e414570abcf90efd1affd",
+      "docs/gifs/DSUB.gif": "4b4ed44da64a5828628198c1b1acb9e02766850c2d6fe98dbffa7550f17120c3",
+      "docs/gifs/Gl.gif": "c369cd016c4a4ee7a11f856a5937e8b0335b8455addc7a3d3105016099f517ee",
+      "docs/gifs/Gm.gif": "21b61e2974442b09ce7eae9d52bc04ecd9e8532ddaf92b1e4d60f7596dfa6936",
+      "docs/gifs/Gs.gif": "774dd33a6e6073d481b0d7ad1ddf16a71d75f1b33b019535eefad11c3a60aa18",
+      "docs/gifs/N8.gif": "eae31637bd9df84875f95d0645148d805010d33f0179dbc9aeed5b518cf0d296",
+      "docs/gifs/P12.gif": "6bc4be2e4cce667dc22d72cc3b055f5f8525eec45c28aabd0fecc0455e41d74e",
+      "docs/gifs/P16.gif": "25365a4863653204bc4c99b74de352749f517d8f85ec34ad4ce82ce35ed4bdba",
+      "docs/gifs/P4.gif": "02f29c9cc81cca3c48db17fda96ba4d249b7b1362c345ccd9eec2f4ae89ea626",
+      "docs/gifs/P8.gif": "769721cd107b6f75516e1e1c007d6a6c3a4298d3139c0f925c2ab8f88fbad8cc",
+      "docs/gifs/R12.gif": "17f50543f80db3077724a944fb85d3281f641ab05b592f2c52a71554ec6ef7c1",
+      "docs/gifs/R16.gif": "bedb35f7d899d18af3a2525e4057279a308e2c82836fb5893077351b8666b521",
+      "docs/gifs/R4.gif": "6028fcf2a9b143223dcebd133ed0bac85f2cd562db5e2094062f34233e78f8fb",
+      "docs/gifs/R8.gif": "6c095c45f9a85e27c3e9660792a7bd9a099835d9c51c642517f153891e86186e",
+      "docs/gifs/RJ45.gif": "3adf0920bd0af573d1dbbded215e3499f0046171c0c126ec7f99b8ecbef831f2",
+      "docs/gifs/USB.gif": "635ac09bd44a4d3d2a51788b1d547a7b96c3b5b8e60b4f0c5e7f3a84802a6e6b",
+      "docs/gifs/WP.gif": "e200992c03dff4aeb3a9c4064e55ebb1507c325818d894d023caa813e48eb4a7",
+      "docs/gifs/all_parts_physical_preview.gif": "5a476c8235a97751f36fe9005c671a02339d2d1d1b5d442ff98248531d6223a4",
+      "docs/gifs/four_starts_per_task_preview.gif": "ca05be1cabd64f45136fb9b3295d91ff2601d309e76f355cf9073061ec8e060e",
+      "docs/gifs/one_board_sequential_preview.gif": "a703f4736dca6bc3f38c27e969ba6c0a700091c32be681e1d1168ccb91a94bec",
+      "docs/videos/all_parts_physical_three_views.mp4": "b5cf66b53d30081580228754c211cebcb187c0619ede78a5d3915a0202ddb2e2",
+      "docs/videos/four_starts_per_task.mp4": "12e9f032b3671a488f3779f1e9f0bfd4659b764d69bd0140592a41f928057b77",
+      "docs/videos/one_board_sequential.mp4": "fc96f15b50256d50452a9ff8752e4d8c7c104db3ba94f4fae4cafdd71b198dfe"
+    }
   }
 ]

@@ -62,7 +62,7 @@ Gear geometry comes from [IndustRealKit `0c91cb5`](https://github.com/NVlabs/ind
 
 ### Campaign rollout renders
 
-`docs/images/campaign/*.png` are frames of policy rollouts from the November 2026 NIST Task Board 1 campaign
+`docs/images/campaign/*.png`, `docs/videos/*.mp4` and `docs/gifs/*.gif` are frames and videos of policy rollouts from the November 2026 NIST Task Board 1 campaign
 ([report](campaign_2026-11.md)), rendered with MuJoCo's EGL renderer. The robot is the MuJoCo Menagerie Franka Emika
 Panda model (Apache-2.0); the board, fixtures and parts are the NIST Assembly Task Board 1 geometry from the UW Lab NIST
 assembly scene assets. Colours are this project's palette. Entries with hashes are in `docs/images/provenance.json`.

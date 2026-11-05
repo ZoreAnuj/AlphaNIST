@@ -16,20 +16,6 @@ The implementation combines point-cloud observations, separate actor and critic 
 
 This is an adaptation, not an exact reproduction of the paper's Franka/NIST benchmark. Point aggregation, robot dimensions, collision geometry, reset validation, and several unspecified optimizer defaults are explicit implementation choices. Their sources and differences are recorded in [provenance](docs/provenance.md) and `policy.CONFIG_PROVENANCE`.
 
-## Rendered task gallery
-
-These are existing **assembled-target renders** from the experimental scenes, not policy rollouts or evidence of learned success. Source geometry credits and image-specific terms are in [image provenance](docs/provenance.md#rendered-images).
-
-| Motor seated in bracket | Flexible shaft coupling |
-| :---: | :---: |
-| ![NEMA17 motor seated in its bracket](docs/images/02_motor_mount.png) | ![Flexible coupling seated on a motor shaft](docs/images/03_shaft_coupling.png) |
-| Linear guide | Enclosure and lid |
-| ![Linear carriage on its rail](docs/images/04_linear_guide.png) | ![Enclosure with its lid in the target pose](docs/images/05_enclosure.png) |
-
-![Three gears positioned on their base](docs/images/06_gear_train.png)
-
-*Gear assembly: NVIDIA IndustRealKit source geometry; this image is subject to the included [NVIDIA research/evaluation license](third_party/IndustReal-NVIDIA.txt).*
-
 ## Results: NIST Task Board 1 campaign (November 2026)
 
 A 16-seed campaign of the method on the NIST Assembly Task Board 1 with a Franka Panda in CPU MuJoCo (17 of the 20
@@ -49,16 +35,39 @@ instead of the paper's 1e-4 because 1e-4 starves never-solved starts (0.3 % of d
 `SuccessGuidedSampler.coverage()` reports where the draws go, and `halving.py` holds the seed-halving decision rule with
 its straggler handling. Training-log success is not a measure of the policy: it tracks the sampler's current draw.
 
-![Four randomized starts per task](docs/images/campaign/four_starts_per_task.png)
+### Videos: combined runs
 
-*Seed 25 at update 2050: four randomized successful starts per task, one per reset family where available; the two
-rows shown are the 4 mm round peg and the M8 nut. All 17 segments: 68 starts, 68 seated.*
+Previews play inline; each full video is an mp4 in `docs/videos/` that plays on GitHub when opened and in any editor
+with a video viewer. Policy seed 25 at update 2050, real time, training physics.
 
-![All parts physical, three views](docs/images/campaign/all_parts_physical_three_views.png)
+**All 17 tasks with four randomized starts each**, one task after another, 96 s: [full video](docs/videos/four_starts_per_task.mp4). 68 starts, 68 seated; the M8 nut from loose, pick-up, in-hand and near starts.
 
-*The same policy assembling all 17 parts on one board in one run with every part a rigid body: 15 of 17 seated. The
-policy perceives only its own part, so it sweeps loose parts and knocks seated neighbours; the wrist camera (bottom
-left) shows it happen.*
+![All tasks, four starts each](docs/gifs/four_starts_per_task_preview.gif)
+
+**All 17 parts on one board in one run**, no world reset, the robot state carried over between parts, 100 s: [full video](docs/videos/one_board_sequential.mp4). 17 of 17 seated, 1.5 to 7 s per part, the nut 17.9 s. Only the active part is physical per stage.
+
+![One board, all parts](docs/gifs/one_board_sequential_preview.gif)
+
+**All parts physical, three views**, 156 s: [full video](docs/videos/all_parts_physical_three_views.mp4). Every part is a rigid body for the whole run and collides with the others, every fixture and the robot. 15 of 17 assembled, 13 still seated at the end: the policy perceives only its own part, so it sweeps loose parts and knocks seated neighbours. Fixed camera on top, wrist camera on the hand bottom left, close-up bottom right.
+
+![All parts physical](docs/gifs/all_parts_physical_preview.gif)
+
+### Videos: task by task
+
+Each clip shows the same policy from four randomized starts of the task, one each from the loose, pick-up, in-hand and
+near-target reset families, chosen as successes out of 15 random bank starts (see [the report](docs/campaign_2026-11.md#demonstrations)).
+
+| | |
+| --- | --- |
+| **R4** 4 mm round peg: four starts seated in 1.0 to 3.1 s<br>![R4](docs/gifs/R4.gif) | **R8** 8 mm round peg: four starts seated in 1.0 to 2.4 s<br>![R8](docs/gifs/R8.gif) |
+| **R12** 12 mm round peg: four starts seated in 1.7 to 6.4 s<br>![R12](docs/gifs/R12.gif) | **R16** 16 mm round peg: four starts seated in 0.4 to 3.0 s<br>![R16](docs/gifs/R16.gif) |
+| **P4** 4 mm square peg: four starts seated in 0.2 to 2.2 s<br>![P4](docs/gifs/P4.gif) | **P8** 8 mm square peg: four starts seated in 0.1 to 4.3 s<br>![P8](docs/gifs/P8.gif) |
+| **P12** 12 mm square peg: four starts seated in 0.6 to 5.2 s<br>![P12](docs/gifs/P12.gif) | **P16** 16 mm square peg: four starts seated in 0.6 to 3.3 s<br>![P16](docs/gifs/P16.gif) |
+| **Gs** small gear: four starts seated in 0.8 to 3.6 s<br>![Gs](docs/gifs/Gs.gif) | **Gm** medium gear: four starts seated in 0.5 to 4.8 s<br>![Gm](docs/gifs/Gm.gif) |
+| **Gl** large gear: four starts seated in 1.0 to 3.0 s<br>![Gl](docs/gifs/Gl.gif) | **N8** M8 nut on bolt: four starts seated in 9.1 to 12.6 s<br>![N8](docs/gifs/N8.gif) |
+| **BNC** BNC connector: four starts seated in 0.5 to 4.2 s<br>![BNC](docs/gifs/BNC.gif) | **DSUB** D-sub connector: four starts seated in 1.9 to 5.2 s<br>![DSUB](docs/gifs/DSUB.gif) |
+| **RJ45** RJ45 connector: four starts seated in 0.4 to 2.0 s<br>![RJ45](docs/gifs/RJ45.gif) | **USB** USB connector: four starts seated in 0.7 to 8.3 s<br>![USB](docs/gifs/USB.gif) |
+| **WP** waterproof connector: four starts seated in 1.4 to 4.8 s<br>![WP](docs/gifs/WP.gif) |  |
 
 ## Quick start: learning core
 
