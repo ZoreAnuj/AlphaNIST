@@ -30,22 +30,24 @@ reset-sampler finding and the halving rule are in [the campaign report](docs/cam
 | M8 nut | 26.9 %: 89 % from partially inserted starts, 19 % from loose starts after the sampler-floor fix, 0 % before |
 | progression of the hard families (seed 14, loose / pick-up / in-hand) | update 100: 0 / 0 / 1, 500: 16 / 18 / 40, 1000: 33 / 32 / 60, 1500: 79 / 87 / 87, 2000: 91 / 92 / 92 |
 
-### Evaluation along training
+### Training curves
 
-Every checkpoint on the milestone list was scored on the same held-out panel, 3,200 trials each, the same 160 starts
-per task every time. The plot follows each of the 17 tasks through the winning lineage (seed 14, continued by its
-forks), from the first checkpoint to update 2000. Numbers for every evaluated checkpoint of every seed, including the
-per-family split, are in [`docs/campaign_evals.csv`](docs/campaign_evals.csv).
+Seed 14, the seed whose lineage won the halving, logged the success of its own rollouts for every task at every one of
+its updates. Smoothed over 25 updates, that is the training curve of each task from the first update to today:
 
-![Held-out success of each task along training](docs/images/campaign/per_task_progression.png)
+![Training curve of every task](docs/images/campaign/per_task_training_curve.png)
 
-Reading it: the gears are the first to be solved (above 90 % at update 500), the connectors and round pegs follow by
-1500, the square pegs are the slowest of the insertion tasks, with the 4 mm square peg last, and the M8 nut stays at
-zero until the reset-sampler floor was raised at update 1900, after which it starts to move. The same evaluations split
-by reset family show the three hard families, loose on the plate, pick-up and in hand, going from 0 to 90 % while the
-partially inserted starts were never below 84 %:
+The gears are learned first, then the connectors and the round pegs, the square pegs last among the insertion tasks,
+and the M8 nut only once the reset-sampler floor was raised at update 1900. The same log split by reset family:
 
-![Held-out success by reset family along training](docs/images/campaign/family_progression.png)
+![Training curve by reset family](docs/images/campaign/family_training_curve.png)
+
+These curves measure the policy on the starts the sampler drew for that update, so they read high early, when the
+sampler draws easy starts, and dip late, when it concentrates on the hardest unsolved ones. The held-out panel, the same
+160 starts per task at every checkpoint, is the fixed yardstick: 21.8 % at update 100, 45.3 at 500, 59.0 at 1000,
+87.6 at 1500, 93.2 at 2000 for this seed, with per-task and per-family plots in [the report](docs/campaign_2026-11.md#progression-of-the-held-out-success)
+and every evaluation of every seed in [`docs/campaign_evals.csv`](docs/campaign_evals.csv). The raw log behind the
+curves is [`docs/campaign_training_log_seed14.csv`](docs/campaign_training_log_seed14.csv).
 
 What changed in this repository because of it: the success-guided sampler's floor (`sgs_epsilon`) defaults to 1e-2
 instead of the paper's 1e-4 because 1e-4 starves never-solved starts (0.3 % of draws reached them after 1,900 updates),

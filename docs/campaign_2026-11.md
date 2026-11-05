@@ -47,6 +47,15 @@ The families converge in the order of their difficulty: partially inserted start
 near-target starts by update 1000, the three hard families (loose, pick-up, in-hand) climb from 0 to 90 % between
 updates 100 and 2000. The one task that does not follow is the nut (N8), see below.
 
+### Training curves from the learner log
+
+![Training curve of every task](images/campaign/per_task_training_curve.png)
+
+![Training curve by reset family](images/campaign/family_training_curve.png)
+
+Raw log: [`campaign_training_log_seed14.csv`](campaign_training_log_seed14.csv) (one row per update: success, per task,
+per family, transitions).
+
 ### Training-logged success is not a measure of the policy
 
 The learner logs success on the starts the sampler drew, not on a fixed panel. Seed 14's log reads 54 % at update 1
